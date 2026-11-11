@@ -4,7 +4,7 @@
 
 | | |
 |---|---|
-| Version de référence | 1.4.8 |
+| Version de référence | 1.5.0 |
 | Public | Membres disposant du rôle « Skin Maker » |
 | Objet | Présentation du logiciel, de son organisation et du rôle de chaque module |
 | Hors périmètre | Procédures pas à pas (les assistants du logiciel guident chaque opération) |
@@ -87,7 +87,7 @@ Chaque compte est associé à un poste unique, identifié par un code PC (`XXXX-
 | Sons et effets | Complet |
 | Aperçu ingame | Complet |
 | Exports ROTK | Skin d'arme, Objet porté animé, Replace de skin de base, Convertir PNG vers DDS |
-| Bibliothèque | Retirer des skins |
+| Bibliothèque | Retirer des skins, Corbeille |
 | Outils | Complet |
 
 Les éléments non inclus restent affichés, grisés et marqués d'un cadenas. Des droits complémentaires peuvent être attribués individuellement par l'administrateur.
@@ -110,6 +110,7 @@ Tant que la configuration requise est incomplète, un guide de mise en service s
 
 - **Barre latérale** : navigation organisée en quatre familles : Créer, Voir, Partager, Gérer. Elle comprend également le bouton « Lancer le jeu » et la carte de compte.
 - **Hubs** : chaque module de création se présente sous forme de tuiles. Une tuile ouvre soit un formulaire, soit un assistant en plusieurs étapes conclu par un récapitulatif.
+- **Assistants** : le fil d'étapes est cliquable pour revenir directement à une étape déjà atteinte. Après une création, le bouton **Modifier ce skin** rouvre l'assistant avec les mêmes valeurs : une nouvelle exécution met à jour le même skin.
 - **Journal** : suivi en temps réel des traitements en cours.
 - **Discord Rich Presence** : affichage optionnel de l'activité dans le statut Discord.
 - **Langues** : français, anglais.
@@ -205,7 +206,14 @@ Les exports ne contiennent que les fichiers nécessaires à l'intégration ; les
 
 ### 9.1 Bibliothèque
 
-**Retirer des skins** : liste de l'ensemble des skins personnalisés, triable par date ou par nom. Les skins retirés sont archivés dans `custom-skins\_retired` ; les skins protégés sont exclus. Une reconstruction de l'aperçu est proposée en fin d'opération.
+**Retirer des skins** : liste de l'ensemble des skins personnalisés, triable par date ou par nom, avec aperçu 3D. Deux actions :
+
+- **Archiver** : le skin est déplacé dans `custom-skins\_retired` et reste restaurable ;
+- **Supprimer définitivement** : les fichiers du skin sont effacés du disque, après confirmation. Cette action est irréversible.
+
+Les skins protégés sont exclus. Une reconstruction de l'aperçu est proposée en fin d'opération.
+
+**Corbeille** : liste des skins archivés, avec aperçu 3D. **Restaurer** rétablit un skin avec ses identifiants d'origine : les tenues sauvegardées qui l'utilisaient le retrouvent. Un skin réinstallé depuis son archivage apparaît grisé et ne peut pas être restauré.
 
 ### 9.2 Outils
 
@@ -262,7 +270,7 @@ Les exports ne contiennent que les fichiers nécessaires à l'intégration ; les
 | `%APPDATA%\H1Z1 Skin Maker\` | Configuration, session, cache des droits |
 | Dossier du client local | Client isolé, serveur local, outils |
 | `custom-skins\` | Skins installés |
-| `custom-skins\_retired\` | Skins archivés |
+| `custom-skins\_retired\` | Skins archivés (restaurables depuis la Corbeille) |
 | `Skins H1Z1\Persos\<Nom>` | Kits Substance des personnages |
 | `Blender\<Nom>` | Exports Blender |
 | Dossier d'export indiqué en fin d'assistant | Paquets ROTK |
