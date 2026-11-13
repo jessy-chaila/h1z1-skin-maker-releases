@@ -1,0 +1,34 @@
+name: Services status
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: services-status
+  cancel-in-progress: true
+
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/status
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Update the Discord status embed
+        run: python .github/status/status.py
+        env:
+          BOT_TOKEN: ${{ secrets.STATUS_BOT_TOKEN }}
+          GIST_ID: ${{ secrets.GIST_ID }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STATUS_CHANNEL_ID: "1570896308498202709"
+          INCIDENTS_CHANNEL_ID: "1570901666209861793"
+          RELEASES_REPO: ${{ github.repository }}
