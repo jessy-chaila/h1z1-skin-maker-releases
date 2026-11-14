@@ -20,6 +20,7 @@ GH_TOKEN = os.environ.get("GITHUB_TOKEN", "")
 STATUS_CH = os.environ["STATUS_CHANNEL_ID"]
 INCIDENTS_CH = os.environ["INCIDENTS_CHANNEL_ID"]
 REPO = os.environ.get("RELEASES_REPO", "jessy-chaila/h1z1-skin-maker-releases")
+GIST_OWNER = os.environ.get("GIST_OWNER", "jessy-chaila")
 UA = "H1Z1-Skin-Maker-Status (https://github.com/%s, 1.0)" % REPO
 
 OK, WARN, DOWN = 0, 1, 2
@@ -92,24 +93,40 @@ def check_release():
         return OK, version, DOWN, f"Download failed ({type(e).__name__})"
 
 
+def _gist_content():
+    """membres.json : d'abord l'URL brute (pas de limite d'API sur les runners partagés), sinon l'API."""
+    errors = []
+    try:
+        _, raw = http(f"https://gist.githubusercontent.com/{GIST_OWNER}/{GIST_ID}/raw/membres.json"
+                      f"?t={int(time.time())}", raw=True)
+        return raw.decode("utf-8")
+    except Exception as e:
+        errors.append(f"raw {getattr(e, 'code', type(e).__name__)}")
+    try:
+        g = gh(f"https://api.github.com/gists/{GIST_ID}")
+        f = g.get("files", {}).get("membres.json")
+        if f:
+            if not f.get("truncated"):
+                return f.get("content", "")
+            _, raw = http(f["raw_url"], raw=True)
+            return raw.decode("utf-8")
+        errors.append("api: file missing")
+    except Exception as e:
+        errors.append(f"api {getattr(e, 'code', type(e).__name__)}")
+    raise RuntimeError(", ".join(errors))
+
+
 def check_access():
     if not GIST_ID:
         return WARN, "Not checked"
     try:
-        g = gh(f"https://api.github.com/gists/{GIST_ID}")
-        f = g.get("files", {}).get("membres.json")
-        if not f:
-            return DOWN, "Member list missing"
-        content = f.get("content", "")
-        if f.get("truncated"):
-            _, raw = http(f["raw_url"], raw=True)
-            content = raw.decode("utf-8")
-        doc = json.loads(content)
+        doc = json.loads(_gist_content())
         bytes.fromhex(doc["sig"])
         serial = doc["data"].get("serial", "?")
         return OK, f"Operational\n-# member list #{serial}"
     except Exception as e:
-        return DOWN, f"Member list unreachable ({type(e).__name__})"
+        print(f"liste des membres illisible : {e}", file=sys.stderr)
+        return DOWN, "Member list unreachable"
 
 
 def check_statuspage(url):
@@ -177,7 +194,7 @@ def build_embed():
         "description": f"## {DOT[overall]} {HEADLINE[overall]}\nLast check <t:{now}:R>",
         "color": COLOR[overall],
         "fields": fields,
-        "footer": {"text": "Updated automatically every ~10 minutes"},
+        "footer": {"text": "Checked automatically by GitHub Actions"},
         "timestamp": datetime.fromtimestamp(now, timezone.utc).isoformat(),
     }
 
