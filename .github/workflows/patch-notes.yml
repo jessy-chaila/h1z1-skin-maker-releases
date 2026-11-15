@@ -1,0 +1,33 @@
+name: Patch notes
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag de la release à publier (vide = dernière)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  patch-notes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/status
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Post the patch note on Discord
+        run: python .github/status/patchnotes.py
+        env:
+          WEBHOOK_URL: ${{ secrets.PATCHNOTES_WEBHOOK }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASES_REPO: ${{ github.repository }}
+          TAG: ${{ inputs.tag }}
