@@ -154,7 +154,7 @@ Vêtements (hauts, vestes, pantalons) et accessoires (casques, masques, lunettes
 | Fonction | Rôle |
 |---|---|
 | Nouveau skin depuis une texture | Création d'un skin de vêtement ou d'accessoire à partir d'un modèle du jeu et d'une texture. |
-| Vêtement ou objet animé | Animation d'un vêtement ou accessoire existant par la méthode Print (masque, motif, couches de fond). |
+| Vêtement ou objet animé | Nouveau vêtement ou accessoire animé (modèle du jeu + texture), ou animation d'un skin déjà créé, par la méthode Print (masque, motif, couches de fond). |
 
 ---
 
