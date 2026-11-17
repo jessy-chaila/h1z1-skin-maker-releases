@@ -87,7 +87,7 @@ Chaque compte est associé à un poste unique, identifié par un code PC (`XXXX-
 | Sons et effets | Complet |
 | Aperçu ingame | Complet |
 | Exports ROTK | Skin d'arme, Objet porté animé, Replace de skin de base, Convertir PNG vers DDS |
-| Bibliothèque | Retirer des skins, Corbeille |
+| Bibliothèque | Modifier un skin, Retirer des skins, Corbeille |
 | Outils | Complet |
 
 Les éléments non inclus restent affichés, grisés et marqués d'un cadenas. Des droits complémentaires peuvent être attribués individuellement par l'administrateur.
@@ -154,7 +154,7 @@ Vêtements (hauts, vestes, pantalons) et accessoires (casques, masques, lunettes
 | Fonction | Rôle |
 |---|---|
 | Nouveau skin depuis une texture | Création d'un skin de vêtement ou d'accessoire à partir d'un modèle du jeu et d'une texture. |
-| Vêtement ou objet animé | Nouveau vêtement ou accessoire animé (modèle du jeu + texture), ou animation d'un skin déjà créé, par la méthode Print (masque, motif, couches de fond). |
+| Vêtement ou objet animé | Nouveau vêtement ou accessoire animé (modèle du jeu + texture), ou animation d'un skin déjà créé, par la méthode Print (masque, motif, couches de fond). Un effet de particules du jeu peut être placé sur l'os choisi (poignets, tête, chevilles…), avec décalage et rotation. |
 
 ---
 
@@ -199,6 +199,8 @@ Production de paquets destinés à l'équipe ROTK. Le pseudo d'auteur de la Conf
 | Replace de skin de base | Texture de remplacement d'un skin existant : fichiers C, S, N et dossier `Icon` contenant l'icône d'origine. |
 | Convertir PNG vers DDS | Conversion d'une image au format DDS BC3 (DXT5) avec mipmaps, avec détourage optionnel d'un fond uni. |
 
+Le nom proposé à l'export est celui de la fiche du skin. Il est appliqué à l'ensemble des fichiers produits : dossier, archive, icône, acteurs, maillages (tous les LOD), palettes, textures et animation.
+
 Les exports ne contiennent que les fichiers nécessaires à l'intégration ; les modalités d'intégration relèvent de l'équipe ROTK.
 
 ---
@@ -206,6 +208,11 @@ Les exports ne contiennent que les fichiers nécessaires à l'intégration ; les
 ## 9. Gérer
 
 ### 9.1 Bibliothèque
+
+**Modifier un skin** : liste de l'ensemble des skins personnalisés, triable par date ou par nom, avec aperçu 3D.
+
+- **Modifier** rouvre l'assistant qui a créé le skin, prérempli avec ses réglages (modèle, textures, animation, fiche). Le skin est mis à jour en conservant ses identifiants : les tenues sauvegardées ne sont pas affectées. Lorsque plusieurs assistants sont possibles (skin animé puis animé par vidéo, par exemple), la liste **Avec** permet de choisir.
+- **Fiche du skin** : nom affiché dans le menu, rareté et description, modifiables pour tout type de skin, suivis d'une reconstruction de l'aperçu. Le nouveau nom est repris par les exports ROTK.
 
 **Retirer des skins** : liste de l'ensemble des skins personnalisés, triable par date ou par nom, avec aperçu 3D. Deux actions :
 
